@@ -1,38 +1,33 @@
-const products = [
-  { name: 'Radar', price: 1300, quantity: 4 },
-  { name: 'Scanner', price: 2700, quantity: 3 },
-  { name: 'Droid', price: 400, quantity: 7 },
-  { name: 'Grip', price: 1200, quantity: 9 },
-];
-
-function getAllPropValues(propName) {
-  let propValues = [];
-  for (let product of products) {
-    if (propName in product) {
-      propValues.push(product[propName]);
-    }
-  }
-  return propValues;
-}
-// console.log(getAllPropValues('quantity'));
-// console.log(getAllPropValues('category'));
-
-function calculateTotalPrice(productName) {
-  const products = [
-    { name: 'Radar', price: 1300, quantity: 4 },
-    { name: 'Scanner', price: 2700, quantity: 3 },
-    { name: 'Droid', price: 400, quantity: 7 },
-    { name: 'Grip', price: 1200, quantity: 9 },
-    { name: 'Radarrr', price: 300, quantity: 40 },
-  ];
-
-  for (const product of products) {
-    if (product.name === productName) {
-      return product.price * product.quantity;
-    }
-  }
-
-  return `Product ${productName} not found!`;
+function getRandomHexColor() {
+  return `#${Math.floor(Math.random() * 16777215)
+    .toString(16)
+    .padStart(6, 0)}`;
 }
 
-console.log(calculateTotalPrice('Radarrr'));
+const controlsInput = document.querySelector('.controls-input');
+const createBtn = document.querySelector('.create-btn');
+const destroyBtn = document.querySelector('.destroy-btn');
+const boxes = document.querySelector('#boxes');
+
+function createBoxes() {
+  destroyBoxes();
+  const inputNumber = Number(controlsInput.value);
+
+  if (inputNumber > 0 && inputNumber <= 100) {
+    for (let i = 0; i < inputNumber; i++) {
+      const newDiv = document.createElement('div');
+      newDiv.style.width = 30 + i * 10 + 'px';
+      newDiv.style.height = 30 + i * 10 + 'px';
+      newDiv.style.backgroundColor = getRandomHexColor();
+      boxes.append(newDiv);
+    }
+  }
+  controlsInput.value = '';
+}
+
+function destroyBoxes() {
+  boxes.innerHTML = '';
+}
+
+createBtn.addEventListener('click', createBoxes);
+destroyBtn.addEventListener('click', destroyBoxes);
