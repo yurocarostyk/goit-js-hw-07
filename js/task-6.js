@@ -3,31 +3,40 @@ function getRandomHexColor() {
     .toString(16)
     .padStart(6, 0)}`;
 }
+const input = document.querySelector('input[type="number"]');
+const createButton = document.querySelector('button[data-create]');
+const destroyButton = document.querySelector('button[data-destroy]');
+const boxesContainer = document.querySelector('#boxes');
 
-const controlsInput = document.querySelector(".controls-input");
-const createBtn = document.querySelector(".create-btn");
-const destroyBtn = document.querySelector(".destroy-btn");
-const boxes = document.querySelector("#boxes");
+function createBoxes(amount) {
+  const fragment = document.createDocumentFragment();
+  const baseSize = 30;
 
-function createBoxes() {
-  destroyBoxes();
-  const inputNumber = Number(controlsInput.value);
-
-  if (inputNumber > 0 && inputNumber <= 100) {
-    for (let i = 0; i < inputNumber; i++) {
-      const newDiv = document.createElement("div");
-      newDiv.style.width = 30 + i * 10 + "px";
-      newDiv.style.height = 30 + i * 10 + "px";
-      newDiv.style.backgroundColor = getRandomHexColor();
-      boxes.append(newDiv);
-    }
+  for (let i = 0; i < amount; i++) {
+    const size = baseSize + i * 10;
+    const box = document.createElement('div');
+    box.style.width = `${size}px`;
+    box.style.height = `${size}px`;
+    box.style.backgroundColor = getRandomHexColor();
+    fragment.appendChild(box);
   }
-  controlsInput.value = "";
+
+  boxesContainer.innerHTML = '';
+  boxesContainer.appendChild(fragment);
 }
 
 function destroyBoxes() {
-  boxes.innerHTML = "";
+  boxesContainer.innerHTML = '';
 }
 
-createBtn.addEventListener("click", createBoxes);
-destroyBtn.addEventListener("click", destroyBoxes);
+createButton.addEventListener('click', () => {
+  const amount = Number(input.value.trim());
+  if (amount >= 1 && amount <= 100) {
+    createBoxes(amount);
+    input.value = '';
+  } else {
+    alert('Please enter a number between 1 and 100.');
+  }
+});
+
+destroyButton.addEventListener('click', destroyBoxes);
